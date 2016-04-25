@@ -3,6 +3,7 @@ package com.lewiswon.engadget.Pages.HomePostList;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -26,6 +27,7 @@ public class PostListFragment  extends BaseFragment implements ViewContract.View
     private int currentPage=0;
     private PostAdapter  postAdapter;
     private RecyclerView  recyclerView;
+    private SwipeRefreshLayout  swipeRefreshLayout;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -36,8 +38,20 @@ public class PostListFragment  extends BaseFragment implements ViewContract.View
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mPresenter=new Presenter(this);
-        mPresenter.getPosts(currentPage);
         setUpRecycler();
+        setupSwipeRefreshLayout();
+        mPresenter.getPosts(currentPage);
+        toggleRefresh(true);
+    }
+    private void setupSwipeRefreshLayout(){
+        swipeRefreshLayout= (SwipeRefreshLayout) getView().findViewById(R.id.swipelayout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                currentPage=1;
+                mPresenter.getPosts(currentPage);
+            }
+        });
     }
     private void setUpRecycler(){
         recyclerView= (RecyclerView) getView().findViewById(R.id.recyclerview);
@@ -56,16 +70,17 @@ public class PostListFragment  extends BaseFragment implements ViewContract.View
             }
         }));
     }
+    public void toggleRefresh(boolean toogle){
+        swipeRefreshLayout.setRefreshing(toogle);
+    }
     @Override
     public void loadPosts(ArrayList<Post> list) {
-        for (Post p:list){
-            Log.i("post:",p.toJson());
-        }
+        toggleRefresh(false);
         postAdapter.setList(list);
     }
 
     @Override
     public void showMessage(String message) {
-
+        toggleRefresh(false);
     }
 }
