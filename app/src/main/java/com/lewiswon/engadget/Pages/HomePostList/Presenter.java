@@ -36,7 +36,6 @@ public class Presenter implements ViewContract.Action {
             @Override
             public void onSucess(String result) {
                 Gson  gson=new Gson();
-                Log.i("sucess",result);
                 API<ArrayList<Post>> results=gson.fromJson(result,new TypeToken<API<ArrayList<Post>>>(){}.getType());
                 subscriber.onNext(results.getData());
             }

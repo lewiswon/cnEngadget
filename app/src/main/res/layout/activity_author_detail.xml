@@ -12,6 +12,7 @@
         android:scaleType="centerCrop"
         android:layout_height="wrap_content"/>
         <TextView
+            android:id="@+id/nametextview"
             android:text="ROSS WANG"
             android:textColor="@android:color/white"
             android:layout_alignBottom="@id/imageView"

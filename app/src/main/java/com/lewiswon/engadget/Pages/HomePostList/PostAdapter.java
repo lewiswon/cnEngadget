@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.lewiswon.engadget.Pages.AuthorDetail.AuthorDetailActivity;
 import com.lewiswon.engadget.R;
+import com.lewiswon.engadget.Utils.DateUtils;
 import com.lewiswon.engadget.Utils.ScreenUtils;
 import com.lewiswon.engadget.data.Author;
 import com.lewiswon.engadget.data.Post;
@@ -66,83 +67,32 @@ public class PostAdapter  extends RecyclerView.Adapter<PostAdapter.PostViewHolde
             super(itemView);
             this.view=itemView;
         }
-        public void setItems(Post post){
+        public void setItems(final Post post){
             TextView title= (TextView) view.findViewById(R.id.title);
             TextView  author=(TextView)view.findViewById(R.id.author);
             TextView  summary=(TextView)view.findViewById(R.id.summary);
             TextView  timeTv=(TextView)view.findViewById(R.id.time);
-            if (post.getImg()!=null){
-                ImageView  imageView= (ImageView) view.findViewById(R.id.imageView);
+            if (post.getImg()!=null){ImageView  imageView= (ImageView) view.findViewById(R.id.imageView);
                ViewGroup.LayoutParams params=imageView.getLayoutParams();
                 params.height= (int) (ScreenUtils.getScreenWidth(view.getContext())/1.575);
-//                imageView.setLayoutParams(params);
                 Glide.with(view.getContext()).load(post.getImg()).into(imageView);
             }
-
-            timeTv.setText(getTimeStr(post.getTime()));
-            title.setText(post.getTitle());
-            author.setText(post.getAuthor());
-            summary.setText(post.getSummary());
-//            getAuthor(post.getAuthorLink());
-
-        }
-        public String getTimeStr(String timeStr){
-            try{
-                DateTime  time=DateTime.parse(timeStr);
-                return time.toString("yyyy-MM-dd hh:mm");
-            }catch (Exception e){
-                e.printStackTrace();
-                return "";
-            }
-        }
-        public void setAuthor(final Author author){
-            TextView  authorTv= (TextView) view.findViewById(R.id.author);
-            authorTv.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    AuthorDetailActivity.open(v.getContext(),author);
-                }
-            });
-            if (author.getWeibo()!=null){
-               view.findViewById(R.id.weibo).setVisibility(View.VISIBLE);
+            if (post.getAuthorWeibo()!=null){
+                view.findViewById(R.id.weibo).setVisibility(View.VISIBLE);
             }else{
                 view.findViewById(R.id.weibo).setVisibility(View.INVISIBLE);
             }
-        }
-        private void getAuthor(final String url){
-            Observable<Author>  observable=Observable.create(new Observable.OnSubscribe<Author>() {
+            timeTv.setText(DateUtils.getTimeStr(post.getTime()));
+            title.setText(post.getTitle());
+            author.setText(post.getAuthor());
+            summary.setText(post.getSummary());
+            author.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void call(final Subscriber<? super Author> subscriber) {
-                    new AuthorDataSource().getAuthor(url, new AuthorDataSource.Listener() {
-                        @Override
-                        public void onSucess(Author author) {
-                            subscriber.onNext(author);
-                        }
-
-                        @Override
-                        public void onError(String error) {
-
-                        }
-                    });
+                public void onClick(View v) {
+                    AuthorDetailActivity.open(v.getContext(),post.getAuthorLink());
                 }
             });
-            Subscriber<Author>  subscriber=new Subscriber<Author>() {
-                @Override
-                public void onCompleted() {
-
-                }
-
-                @Override
-                public void onError(Throwable e) {
-
-                }
-
-                @Override
-                public void onNext(Author author) {
-                    setAuthor(author);
-                }
-            };
-            observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(subscriber);
         }
+
     }
 }

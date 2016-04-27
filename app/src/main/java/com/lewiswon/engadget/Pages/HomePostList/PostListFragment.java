@@ -59,17 +59,17 @@ public class PostListFragment  extends BaseFragment implements ViewContract.View
         postAdapter=new PostAdapter(new ArrayList<Post>());
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(postAdapter);
-        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new RecyclerTouchListener.Listener() {
-            @Override
-            public void onClick(View view, int postion) {
-                PostDetailActivity.open(getActivity(),postAdapter.getItem(postion).getUrl());
-            }
-
-            @Override
-            public void onLongClick(View view, int position) {
-
-            }
-        }));
+//        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new RecyclerTouchListener.Listener() {
+//            @Override
+//            public void onClick(View view, int postion) {
+//                PostDetailActivity.open(getActivity(),postAdapter.getItem(postion).getUrl());
+//            }
+//
+//            @Override
+//            public void onLongClick(View view, int position) {
+//
+//            }
+//        }));
         recyclerView.setLoadMoreListener(new LoadMoreRecyclerView.LoadMoreListener() {
             @Override
             public void onLoadMore() {
@@ -78,8 +78,14 @@ public class PostListFragment  extends BaseFragment implements ViewContract.View
             }
         });
     }
-    public void toggleRefresh(boolean toogle){
-        swipeRefreshLayout.setRefreshing(toogle);
+    public void toggleRefresh(final boolean toogle){
+//        swipeRefreshLayout.setRefreshing(toogle);
+        swipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefreshLayout.setRefreshing(toogle);
+            }
+        });
     }
     @Override
     public void loadPosts(ArrayList<Post> list) {
@@ -94,5 +100,6 @@ public class PostListFragment  extends BaseFragment implements ViewContract.View
     public void showMessage(String message) {
         recyclerView.onLoadMoreComplete(true);
         toggleRefresh(false);
+        Log.i("fragment error",message);
     }
 }

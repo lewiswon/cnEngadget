@@ -36,6 +36,7 @@ public class AuthorDataSource {
         author.setProfile(bio.select(".history").first().select("p").first().text());
         Element social=ele.select(".social").first();
         author.setEmail(social.select(".email").first().select("a").first().text());
+        if (social.select(".twitter").first()!=null)
         author.setWeibo(social.select(".twitter").first().select("a").attr("abs:href"));
 
         return author;

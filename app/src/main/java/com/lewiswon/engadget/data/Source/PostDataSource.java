@@ -1,5 +1,7 @@
 package com.lewiswon.engadget.data.Source;
 
+import android.util.Log;
+
 import com.lewiswon.engadget.data.Post;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
@@ -7,9 +9,6 @@ import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 
-/**
- * Created by Lordway on 16/4/25.
- */
 public class PostDataSource {
 
     public void getPostHeader(String url,Listener listener){
@@ -25,9 +24,10 @@ public class PostDataSource {
         }
     }
     public void getPosts(String url,Listener listener) {
+        ArrayList<Post> postList=null;
         try {
         Element pageElement = Jsoup.connect(url).get();
-            ArrayList<Post> postList = parseArticleList(pageElement);
+           postList = parseArticleList(pageElement);
 
         if (postList != null && postList.size() > 0) {
 
@@ -36,8 +36,11 @@ public class PostDataSource {
             listener.onError("error");
         }
         }catch (Exception e){
-            e.printStackTrace();
-            listener.onError(e.getMessage()+"");
+            listener.onError(e.getMessage()+"error");
+        }finally {
+            if (postList==null){
+                listener.onError("error");
+            }
         }
     }
 
@@ -57,8 +60,15 @@ public class PostDataSource {
 
                 item.setAuthor(info.select("a").first().text());
                 item.setAuthorLink(info.select("a").first().attr("abs:href"));
-                if(info.hasClass(".weibo"))
+                Element weibo=info.select(".weibo").first();
+                if (weibo!=null){
+                    Log.i("weibo",info.select(".weibo").first().select("a").first().attr("abs:href"));
                     item.setAuthorWeibo(info.select(".weibo").first().select("a").first().attr("abs:href"));
+                }
+                if(info.hasClass("weibo")){
+                    item.setAuthorWeibo(info.select(".weibo").first().select("a").first().attr("abs:href"));
+                    Log.i("weibo",info.select(".weibo").first().select("a").first().attr("abs:href"));
+                };
                 item.setTime(info.select("time").first().attr("datetime"));
                 Element  postBody=element.select(".post-body").first();
                 item.setSummary(postBody.select(".copy").first().text());
