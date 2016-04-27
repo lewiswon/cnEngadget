@@ -15,7 +15,7 @@ public class PostDataSource {
     public void getPostHeader(String url,Listener listener){
         try {
             Element pageElement = Jsoup.connect(url).get();
-            ArrayList<Post> alwaysTopList = parseAlwayTop(pageElement);
+            ArrayList<Post> alwaysTopList = parseAlwaysTop(pageElement);
             if (alwaysTopList != null && alwaysTopList.size() > 0) {
 
                 listener.onSucess(new API<ArrayList<Post>>().write(alwaysTopList));
@@ -32,9 +32,12 @@ public class PostDataSource {
         if (postList != null && postList.size() > 0) {
 
            listener.onSucess(new API<ArrayList<Post>>().write(postList));
+        }else{
+            listener.onError("error");
         }
         }catch (Exception e){
-            listener.onError(e.getMessage());
+            e.printStackTrace();
+            listener.onError(e.getMessage()+"");
         }
     }
 
@@ -56,7 +59,7 @@ public class PostDataSource {
                 item.setAuthorLink(info.select("a").first().attr("abs:href"));
                 if(info.hasClass(".weibo"))
                     item.setAuthorWeibo(info.select(".weibo").first().select("a").first().attr("abs:href"));
-                item.setTime(info.select("time").first().attr("abs:datetime"));
+                item.setTime(info.select("time").first().attr("datetime"));
                 Element  postBody=element.select(".post-body").first();
                 item.setSummary(postBody.select(".copy").first().text());
                 list.add(item);
@@ -64,7 +67,7 @@ public class PostDataSource {
 
             return list;
         }
-        private ArrayList<Post>  parseAlwayTop(Element pageElement){
+        private ArrayList<Post>  parseAlwaysTop(Element pageElement){
             Element alwaysTopElement=pageElement.getElementById("carousel");
             Elements alwaysTop2Elements=alwaysTopElement.getElementsByAttributeValueContaining("class","always top2");
             Elements alwaysTopElements=alwaysTopElement.getElementsByAttributeValueContaining("class","always");

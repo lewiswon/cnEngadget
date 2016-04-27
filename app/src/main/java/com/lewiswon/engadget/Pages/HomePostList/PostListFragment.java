@@ -16,6 +16,7 @@ import com.lewiswon.engadget.Pages.PostDetail.PostDetailActivity;
 import com.lewiswon.engadget.R;
 import com.lewiswon.engadget.Utils.RecyclerTouchListener;
 import com.lewiswon.engadget.data.Post;
+import com.lewiswon.engadget.widget.LoadMoreRecyclerView;
 
 import java.util.ArrayList;
 
@@ -24,9 +25,9 @@ import java.util.ArrayList;
  */
 public class PostListFragment  extends BaseFragment implements ViewContract.View{
     private Presenter  mPresenter;
-    private int currentPage=0;
+    private int currentPage=1;
     private PostAdapter  postAdapter;
-    private RecyclerView  recyclerView;
+    private LoadMoreRecyclerView recyclerView;
     private SwipeRefreshLayout  swipeRefreshLayout;
     @Nullable
     @Override
@@ -54,7 +55,7 @@ public class PostListFragment  extends BaseFragment implements ViewContract.View
         });
     }
     private void setUpRecycler(){
-        recyclerView= (RecyclerView) getView().findViewById(R.id.recyclerview);
+        recyclerView= (LoadMoreRecyclerView) getView().findViewById(R.id.recyclerview);
         postAdapter=new PostAdapter(new ArrayList<Post>());
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(postAdapter);
@@ -69,18 +70,29 @@ public class PostListFragment  extends BaseFragment implements ViewContract.View
 
             }
         }));
+        recyclerView.setLoadMoreListener(new LoadMoreRecyclerView.LoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                currentPage++;
+                mPresenter.getPosts(currentPage);
+            }
+        });
     }
     public void toggleRefresh(boolean toogle){
         swipeRefreshLayout.setRefreshing(toogle);
     }
     @Override
     public void loadPosts(ArrayList<Post> list) {
+        recyclerView.onLoadMoreComplete(true);
         toggleRefresh(false);
-        postAdapter.setList(list);
+        boolean needClear=false;
+        if (currentPage<=1)needClear=true;
+        postAdapter.setList(list,needClear);
     }
 
     @Override
     public void showMessage(String message) {
+        recyclerView.onLoadMoreComplete(true);
         toggleRefresh(false);
     }
 }

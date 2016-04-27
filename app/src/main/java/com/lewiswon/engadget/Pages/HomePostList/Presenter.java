@@ -1,9 +1,12 @@
 package com.lewiswon.engadget.Pages.HomePostList;
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.lewiswon.engadget.data.Post;
 import com.lewiswon.engadget.data.Source.API;
 import com.lewiswon.engadget.data.Source.PostDataSource;
+import com.lewiswon.engadget.data.Source.PostDetailDataSource;
 
 import java.util.ArrayList;
 
@@ -17,6 +20,8 @@ import rx.schedulers.Schedulers;
  */
 public class Presenter implements ViewContract.Action {
     private ViewContract.View  mView;
+    private PostDataSource  postDataSource;
+    private PostDataSource.Listener listener;
     public Presenter(ViewContract.View view){
     this.mView=view;
     }
@@ -24,26 +29,39 @@ public class Presenter implements ViewContract.Action {
     @Override
     public void getPosts(int page) {
         String suffix="/page/"+page;
-        if(page==1||page==0){
-            suffix="";
-        }
+        if(page==1||page==0) suffix="";
         final String url="http://cn.engadget.com"+suffix;
+        if (postDataSource==null)postDataSource=new PostDataSource();
+        if (listener==null)listener=new PostDataSource.Listener() {
+            @Override
+            public void onSucess(String result) {
+                Gson  gson=new Gson();
+                Log.i("sucess",result);
+                API<ArrayList<Post>> results=gson.fromJson(result,new TypeToken<API<ArrayList<Post>>>(){}.getType());
+                subscriber.onNext(results.getData());
+            }
+
+            @Override
+            public void onError(String error) {
+                subscriber.onError(new Throwable(error));
+            }
+        };
+
         Observable<ArrayList<Post>> observable=Observable.create(new Observable.OnSubscribe<ArrayList<Post>>() {
             @Override
             public void call(final Subscriber<? super ArrayList<Post>> subscriber) {
-                new PostDataSource().getPosts(url, new PostDataSource.Listener() {
+                postDataSource.getPosts(url, new PostDataSource.Listener() {
                     @Override
                     public void onSucess(String result) {
                         Gson  gson=new Gson();
-
+                        Log.i("sucess",result);
                         API<ArrayList<Post>> results=gson.fromJson(result,new TypeToken<API<ArrayList<Post>>>(){}.getType());
-
                         subscriber.onNext(results.getData());
                     }
 
                     @Override
                     public void onError(String error) {
-                        subscriber.onError(new Exception(error));
+                        subscriber.onError(new Throwable(error));
                     }
                 });
             }
