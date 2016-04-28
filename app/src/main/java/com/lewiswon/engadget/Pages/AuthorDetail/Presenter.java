@@ -33,7 +33,7 @@ public class Presenter implements ViewContract.Action{
 
                     @Override
                     public void onError(String error) {
-
+                        subscriber.onError(new Throwable(error));
                     }
                 });
             }

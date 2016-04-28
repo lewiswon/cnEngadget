@@ -12,6 +12,7 @@ public interface ViewContract {
     interface View{
         void loadPosts(ArrayList<Post> list);
         void showMessage(String message);
+        void back2Top();
     }
     interface Action{
         void getPosts(int page);

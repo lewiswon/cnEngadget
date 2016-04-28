@@ -9,11 +9,13 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.lewiswon.engadget.Pages.AuthorDetail.AuthorDetailActivity;
+import com.lewiswon.engadget.Pages.PostDetail.PostDetailActivity;
 import com.lewiswon.engadget.R;
 import com.lewiswon.engadget.Utils.DateUtils;
 import com.lewiswon.engadget.Utils.ScreenUtils;
 import com.lewiswon.engadget.data.Author;
 import com.lewiswon.engadget.data.Post;
+import com.lewiswon.engadget.data.PostDetail;
 import com.lewiswon.engadget.data.Source.AuthorDataSource;
 
 import org.joda.time.DateTime;
@@ -60,14 +62,24 @@ public class PostAdapter  extends RecyclerView.Adapter<PostAdapter.PostViewHolde
         return posts.size();
     }
 
-    class PostViewHolder extends RecyclerView.ViewHolder{
+    class PostViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private View view;
-
+        private Post  mPost;
         public PostViewHolder(View itemView) {
             super(itemView);
             this.view=itemView;
+            view.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+        if (mPost==null){
+            return;
+        }
+            PostDetailActivity.open(v.getContext(),mPost.getUrl());
         }
         public void setItems(final Post post){
+            this.mPost=post;
             TextView title= (TextView) view.findViewById(R.id.title);
             TextView  author=(TextView)view.findViewById(R.id.author);
             TextView  summary=(TextView)view.findViewById(R.id.summary);
@@ -84,7 +96,7 @@ public class PostAdapter  extends RecyclerView.Adapter<PostAdapter.PostViewHolde
             }
             timeTv.setText(DateUtils.getTimeStr(post.getTime()));
             title.setText(post.getTitle());
-            author.setText(post.getAuthor());
+            author.setText(post.getAuthor().toUpperCase());
             summary.setText(post.getSummary());
             author.setOnClickListener(new View.OnClickListener() {
                 @Override

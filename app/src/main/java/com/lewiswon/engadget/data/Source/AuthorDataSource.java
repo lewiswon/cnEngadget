@@ -17,13 +17,13 @@ public class AuthorDataSource {
         try {
             Element  pageElement= Jsoup.connect(url).get();
             author=parseAuthor(pageElement);
-            listener.onSucess(author);
         }catch (Exception e){
             e.printStackTrace();
-            Log.i("error","error");
         }finally {
             if (author==null){
                 listener.onError("error");
+            }else{
+                listener.onSucess(author);
             }
         }
 

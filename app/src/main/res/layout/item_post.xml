@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/post_item_selector"
     android:descendantFocusability="blocksDescendants"
     android:orientation="vertical">
 
@@ -20,6 +21,8 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
+            android:paddingTop="4dip"
+            android:paddingBottom="4dip"
             android:layout_height="wrap_content">
 
             <TextView
@@ -27,6 +30,7 @@
                 android:text="sanji feng"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/post_item_selector"
                 android:clickable="true"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
@@ -57,6 +61,7 @@
 
         <TextView
             android:id="@+id/summary"
+            android:paddingTop="2dip"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:maxLines="3" />

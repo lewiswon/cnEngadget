@@ -3,6 +3,7 @@ package com.lewiswon.engadget.Pages.HomePostList;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -101,5 +102,17 @@ public class PostListFragment  extends BaseFragment implements ViewContract.View
         recyclerView.onLoadMoreComplete(true);
         toggleRefresh(false);
         Log.i("fragment error",message);
+       Snackbar.make(recyclerView,message,Snackbar.LENGTH_LONG).setAction(R.string.retry, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPresenter.getPosts(currentPage);
+            }
+        }).show();
+    }
+
+    @Override
+    public void back2Top() {
+        if(recyclerView!=null)
+        recyclerView.smoothScrollToPosition(0);
     }
 }

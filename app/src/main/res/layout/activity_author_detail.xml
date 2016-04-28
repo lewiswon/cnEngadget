@@ -1,19 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent">
+<android.support.design.widget.AppBarLayout
+    android:id="@+id/appbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        app:titleTextColor="@android:color/white"
+        android:theme="@style/toolbar"
+        android:background="?colorPrimary"
+        android:layout_height="?attr/actionBarSize"/>
+</android.support.design.widget.AppBarLayout>
     <RelativeLayout
+        android:id="@+id/headpic"
+        android:layout_below="@id/appbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
     <ImageView
         android:id="@+id/imageView"
-        android:src="@mipmap/rosswangengadgetprofile_440x350"
         android:layout_width="match_parent"
         android:scaleType="centerCrop"
         android:layout_height="wrap_content"/>
         <TextView
             android:id="@+id/nametextview"
-            android:text="ROSS WANG"
             android:textColor="@android:color/white"
             android:layout_alignBottom="@id/imageView"
             android:paddingLeft="16dip"
@@ -23,26 +36,35 @@
             android:layout_height="wrap_content" />
     </RelativeLayout>
     <LinearLayout
+        android:layout_below="@id/headpic"
         android:layout_width="match_parent"
         android:padding="16dip"
         android:orientation="vertical"
         android:layout_height="wrap_content">
-    <TextView
+    <ImageView
         android:id="@+id/weibo"
         android:text="微博"
-        android:layout_width="match_parent"
+        android:src="@mipmap/weibo"
+        android:layout_gravity="left"
+        android:clickable="true"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <TextView
         android:id="@+id/email"
-        android:text="ross.wang@engadget.com"
         android:layout_marginTop="6dip"
+        android:clickable="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <TextView
         android:id="@+id/profile"
         android:layout_marginTop="10dip"
-        android:text="从 Nikon D50 开始摸索摄影，一个不小心考上了国内少数的摄影学系后，便时常摸到很多摄影器材，喜欢摸索使用不同器材感受其特性。赞叹科技进步对于摄影产业造成的改变与帮助，也深刻题会影像与科技的不可分割。对于科技产品与好玩小物也极具兴趣。喜好拍摄的题材是街拍摄影，喜欢在喧闹的街道中探索鲜为人所注意的美丽景致。每天带着相机不放弃任何影像片段，如同每天将科技资讯挖掘介绍给大家一样，希望能透过自己不同的观察视野，让更多人了解与爱上科技。"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     </LinearLayout>
-</LinearLayout>
+    <ProgressBar
+        android:id="@+id/progressbar"
+        android:layout_width="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_height="wrap_content" />
+</RelativeLayout>

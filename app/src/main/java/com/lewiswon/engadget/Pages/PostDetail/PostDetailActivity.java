@@ -26,7 +26,6 @@ public class PostDetailActivity extends BaseActivity implements ViewContract.Vie
         }
     }
 
-
     @Override
     public void showMessage(String message) {
 
