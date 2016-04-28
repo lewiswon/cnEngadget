@@ -2,10 +2,13 @@ package com.lewiswon.engadget.data;
 
 import com.lewiswon.engadget.data.Source.JsonObject;
 
+import java.io.Serializable;
+
 /**
  * Created by lewis on 16/4/25.
  */
-public class Author extends JsonObject{
+public class Author extends JsonObject implements Serializable{
+
     private String name;
     private String email;
     private String headpic;

@@ -14,7 +14,6 @@ public class Post extends JsonObject{
     String url;
     String authorLink;
     String authorWeibo;
-
     public void setAuthorWeibo(String weibo){this.authorWeibo=weibo;}
     public void setAuthorLink(String link){this.authorLink=link;}
     public void setTitle(String title) {

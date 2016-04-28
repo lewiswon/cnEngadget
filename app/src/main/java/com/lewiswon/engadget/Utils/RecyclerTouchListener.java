@@ -16,6 +16,8 @@ public class RecyclerTouchListener  implements RecyclerView.OnItemTouchListener 
         gestureDetector=new GestureDetector(context,new GestureDetector.SimpleOnGestureListener(){
             @Override
             public boolean onSingleTapUp(MotionEvent e) {
+                View child=recyclerView.findChildViewUnder(e.getX(),e.getY());
+                if (child.isClickable())return false;
                 return true;
             }
 

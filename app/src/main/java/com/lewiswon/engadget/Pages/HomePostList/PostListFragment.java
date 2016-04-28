@@ -3,6 +3,7 @@ package com.lewiswon.engadget.Pages.HomePostList;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +17,7 @@ import com.lewiswon.engadget.Pages.PostDetail.PostDetailActivity;
 import com.lewiswon.engadget.R;
 import com.lewiswon.engadget.Utils.RecyclerTouchListener;
 import com.lewiswon.engadget.data.Post;
+import com.lewiswon.engadget.widget.LoadMoreRecyclerView;
 
 import java.util.ArrayList;
 
@@ -24,9 +26,9 @@ import java.util.ArrayList;
  */
 public class PostListFragment  extends BaseFragment implements ViewContract.View{
     private Presenter  mPresenter;
-    private int currentPage=0;
+    private int currentPage=1;
     private PostAdapter  postAdapter;
-    private RecyclerView  recyclerView;
+    private LoadMoreRecyclerView recyclerView;
     private SwipeRefreshLayout  swipeRefreshLayout;
     @Nullable
     @Override
@@ -54,33 +56,63 @@ public class PostListFragment  extends BaseFragment implements ViewContract.View
         });
     }
     private void setUpRecycler(){
-        recyclerView= (RecyclerView) getView().findViewById(R.id.recyclerview);
+        recyclerView= (LoadMoreRecyclerView) getView().findViewById(R.id.recyclerview);
         postAdapter=new PostAdapter(new ArrayList<Post>());
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(postAdapter);
-        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new RecyclerTouchListener.Listener() {
+//        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new RecyclerTouchListener.Listener() {
+//            @Override
+//            public void onClick(View view, int postion) {
+//                PostDetailActivity.open(getActivity(),postAdapter.getItem(postion).getUrl());
+//            }
+//
+//            @Override
+//            public void onLongClick(View view, int position) {
+//
+//            }
+//        }));
+        recyclerView.setLoadMoreListener(new LoadMoreRecyclerView.LoadMoreListener() {
             @Override
-            public void onClick(View view, int postion) {
-                PostDetailActivity.open(getActivity(),postAdapter.getItem(postion).getUrl());
+            public void onLoadMore() {
+                currentPage++;
+                mPresenter.getPosts(currentPage);
             }
-
-            @Override
-            public void onLongClick(View view, int position) {
-
-            }
-        }));
+        });
     }
-    public void toggleRefresh(boolean toogle){
-        swipeRefreshLayout.setRefreshing(toogle);
+    public void toggleRefresh(final boolean toogle){
+//        swipeRefreshLayout.setRefreshing(toogle);
+        swipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefreshLayout.setRefreshing(toogle);
+            }
+        });
     }
     @Override
     public void loadPosts(ArrayList<Post> list) {
+        recyclerView.onLoadMoreComplete(true);
         toggleRefresh(false);
-        postAdapter.setList(list);
+        boolean needClear=false;
+        if (currentPage<=1)needClear=true;
+        postAdapter.setList(list,needClear);
     }
 
     @Override
     public void showMessage(String message) {
+        recyclerView.onLoadMoreComplete(true);
         toggleRefresh(false);
+        Log.i("fragment error",message);
+       Snackbar.make(recyclerView,message,Snackbar.LENGTH_LONG).setAction(R.string.retry, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPresenter.getPosts(currentPage);
+            }
+        }).show();
+    }
+
+    @Override
+    public void back2Top() {
+        if(recyclerView!=null)
+        recyclerView.smoothScrollToPosition(0);
     }
 }

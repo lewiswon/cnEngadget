@@ -16,6 +16,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Pages.PostDetail.PostDetailActivity"/>
+        <activity android:name=".Pages.AuthorDetail.AuthorDetailActivity"/>
     </application>
 
 </manifest>

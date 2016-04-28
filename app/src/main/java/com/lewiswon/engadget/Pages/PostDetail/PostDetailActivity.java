@@ -8,22 +8,35 @@ import android.webkit.WebView;
 
 import com.lewiswon.engadget.Pages.BaseActivity;
 import com.lewiswon.engadget.R;
+import com.lewiswon.engadget.data.PostDetail;
 
 /**
  * Created by Lordway on 16/4/25.
  */
-public class PostDetailActivity extends BaseActivity {
+public class PostDetailActivity extends BaseActivity implements ViewContract.View{
     private WebView  webView;
+    private Presenter  mPresenter;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_detail);
-        webView= (WebView) findViewById(R.id.webview);
+        mPresenter=new Presenter(this);
         if (getIntent().hasExtra("url")){
-            String url=getIntent().getStringExtra("url");
-            webView.loadUrl(url);
-
+            mPresenter.getDetail(getIntent().getStringExtra("url"));
         }
+    }
+
+    @Override
+    public void showMessage(String message) {
+
+    }
+
+    @Override
+    public void loadDetail(PostDetail postDetail) {
+        if (webView==null){
+            webView= (WebView) findViewById(R.id.webview);
+        }
+        webView.loadDataWithBaseURL(null,postDetail.getContent(),"text/html","utf8",null);
     }
 
     /**
@@ -39,4 +52,5 @@ public class PostDetailActivity extends BaseActivity {
         intent.putExtra("url",url);
         context.startActivity(intent);
     }
+
 }

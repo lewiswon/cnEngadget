@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<group  android:checkableBehavior="single">
+    <item  android:title="@string/news"
+        android:id="@+id/news"
+        />
+    <item  android:title="@string/review"
+        android:id="@+id/review"/>
+    <item   android:title="@string/gallery"
+        android:id="@+id/gallery"/>
+    <item  android:title="@string/video"
+        android:id="@+id/video"/>
+</group>
+  <item  android:title="@string/others">
+<menu >
+    <item android:title="@string/share"/>
+    <item  android:title="@string/about"/>
+</menu>
+
+  </item>
+</menu>

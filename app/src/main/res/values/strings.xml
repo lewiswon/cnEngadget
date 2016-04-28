@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">Engadget</string>
+    <string name="news">News</string>
+    <string name="review">Review</string>
+    <string name="gallery">Gallery</string>
+    <string name="video">Video</string>
+    <string name="share">Share</string>
+    <string name="about">About</string>
+    <string name="retry">Retry</string>
+    <string name="author_profile">Author\'s Profile</string>
+    <string name="network_not_connected">No Internet</string>
+    <string name="network_timeout">Network Timeout</string>
+    <string name="parse_error">Parse Error</string>
+    <string name="others">Others</string>
 </resources>
