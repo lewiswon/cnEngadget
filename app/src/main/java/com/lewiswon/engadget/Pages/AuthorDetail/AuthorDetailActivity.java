@@ -88,7 +88,13 @@ public class AuthorDetailActivity extends BaseActivity implements ViewContract.V
 
         }
     }
-    private void setImageBelowAPI21(String url,ImageView  imageView){
+
+    @Override
+    public Context context() {
+        return this;
+    }
+
+    private void setImageBelowAPI21(String url, ImageView  imageView){
         Glide.with(this).load(url).into(imageView).onLoadFailed(null,getResources().getDrawable(R.mipmap.broken_image));
     }
     @TargetApi(21)
@@ -97,7 +103,13 @@ public class AuthorDetailActivity extends BaseActivity implements ViewContract.V
     }
     @Override
     public void showMessage(String message) {
-        progressBar.setVisibility(View.INVISIBLE);
+
+        progressBar.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                progressBar.setVisibility(View.INVISIBLE);
+            }
+        },200);
         Snackbar  snackbar=Snackbar.make(progressBar,message,Snackbar.LENGTH_LONG).setAction("重试", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
