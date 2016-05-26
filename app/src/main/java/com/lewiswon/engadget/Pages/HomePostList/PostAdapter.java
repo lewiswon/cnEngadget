@@ -1,5 +1,7 @@
 package com.lewiswon.engadget.Pages.HomePostList;
 
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,6 +47,8 @@ public class PostAdapter  extends RecyclerView.Adapter<PostAdapter.PostViewHolde
     }
     @Override
     public PostViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        FragmentPagerAdapter i;
+        FragmentStatePagerAdapter o;
         View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_post,parent,false);
         return new PostViewHolder(view);
     }

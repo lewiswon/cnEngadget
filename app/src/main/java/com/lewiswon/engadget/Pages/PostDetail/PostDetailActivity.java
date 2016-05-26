@@ -52,5 +52,11 @@ public class PostDetailActivity extends BaseActivity implements ViewContract.Vie
         intent.putExtra("url",url);
         context.startActivity(intent);
     }
+    
+    public static void start(Context context) {
+        Intent starter = new Intent(context, PostDetailActivity.class);
+//        starter.putExtra();
+        context.startActivity(starter);
+    }
 
 }
