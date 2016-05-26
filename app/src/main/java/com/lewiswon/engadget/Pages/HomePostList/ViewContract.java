@@ -1,5 +1,6 @@
 package com.lewiswon.engadget.Pages.HomePostList;
 
+import com.lewiswon.engadget.Pages.BaseView;
 import com.lewiswon.engadget.data.Post;
 
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
  */
 public interface ViewContract {
 
-    interface View{
+    interface View extends BaseView{
         void loadPosts(ArrayList<Post> list);
         void showMessage(String message);
         void back2Top();

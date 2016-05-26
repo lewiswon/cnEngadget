@@ -1,6 +1,9 @@
 package com.lewiswon.engadget.Pages.PostDetail;
 
 import android.util.Log;
+
+import com.lewiswon.engadget.R;
+import com.lewiswon.engadget.Utils.NetWorkUtils;
 import com.lewiswon.engadget.data.PostDetail;
 import com.lewiswon.engadget.data.Source.PostDetailDataSource;
 
@@ -19,6 +22,10 @@ public class Presenter implements ViewContract.Action{
     }
     @Override
     public void getDetail(final String url) {
+        if (!NetWorkUtils.isAvainable(mView.context())){
+            mView.showMessage(mView.context().getString(R.string.network_not_connected));
+            return;
+        }
         Observable<PostDetail>  observable=Observable.create(new Observable.OnSubscribe<PostDetail>() {
             @Override
             public void call(final Subscriber<? super PostDetail> subscriber) {

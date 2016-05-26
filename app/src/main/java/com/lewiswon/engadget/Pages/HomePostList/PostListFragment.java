@@ -1,5 +1,6 @@
 package com.lewiswon.engadget.Pages.HomePostList;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -60,17 +61,6 @@ public class PostListFragment  extends BaseFragment implements ViewContract.View
         postAdapter=new PostAdapter(new ArrayList<Post>());
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(postAdapter);
-//        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new RecyclerTouchListener.Listener() {
-//            @Override
-//            public void onClick(View view, int postion) {
-//                PostDetailActivity.open(getActivity(),postAdapter.getItem(postion).getUrl());
-//            }
-//
-//            @Override
-//            public void onLongClick(View view, int position) {
-//
-//            }
-//        }));
         recyclerView.setLoadMoreListener(new LoadMoreRecyclerView.LoadMoreListener() {
             @Override
             public void onLoadMore() {
@@ -80,13 +70,12 @@ public class PostListFragment  extends BaseFragment implements ViewContract.View
         });
     }
     public void toggleRefresh(final boolean toogle){
-//        swipeRefreshLayout.setRefreshing(toogle);
-        swipeRefreshLayout.post(new Runnable() {
+        swipeRefreshLayout.postDelayed(new Runnable() {
             @Override
             public void run() {
                 swipeRefreshLayout.setRefreshing(toogle);
             }
-        });
+        },200);
     }
     @Override
     public void loadPosts(ArrayList<Post> list) {
@@ -114,5 +103,10 @@ public class PostListFragment  extends BaseFragment implements ViewContract.View
     public void back2Top() {
         if(recyclerView!=null)
         recyclerView.smoothScrollToPosition(0);
+    }
+
+    @Override
+    public Context context() {
+        return getActivity();
     }
 }

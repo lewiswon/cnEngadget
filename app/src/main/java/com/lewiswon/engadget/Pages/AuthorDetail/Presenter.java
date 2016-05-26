@@ -1,5 +1,7 @@
 package com.lewiswon.engadget.Pages.AuthorDetail;
 
+import com.lewiswon.engadget.R;
+import com.lewiswon.engadget.Utils.NetWorkUtils;
 import com.lewiswon.engadget.data.Author;
 import com.lewiswon.engadget.data.Source.AuthorDataSource;
 
@@ -19,6 +21,10 @@ public class Presenter implements ViewContract.Action{
     }
     @Override
     public void getAuthor(final String url){
+        if (!NetWorkUtils.isAvainable(mView.context())){
+            mView.showMessage(mView.context().getString(R.string.network_not_connected));
+            return;
+        }
         Observable<Author> observable=Observable.create(new Observable.OnSubscribe<Author>() {
             @Override
             public void call(final Subscriber<? super Author> subscriber) {

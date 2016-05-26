@@ -59,4 +59,8 @@ public class PostDetailActivity extends BaseActivity implements ViewContract.Vie
         context.startActivity(starter);
     }
 
+    @Override
+    public Context context() {
+        return this;
+    }
 }

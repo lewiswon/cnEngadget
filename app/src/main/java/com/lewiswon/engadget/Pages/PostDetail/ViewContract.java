@@ -1,5 +1,6 @@
 package com.lewiswon.engadget.Pages.PostDetail;
 
+import com.lewiswon.engadget.Pages.BaseView;
 import com.lewiswon.engadget.data.PostDetail;
 
 /**
@@ -7,7 +8,7 @@ import com.lewiswon.engadget.data.PostDetail;
  */
 public interface ViewContract {
 
-    interface View{
+    interface View extends BaseView{
         void showMessage(String message);
         void loadDetail(PostDetail postDetail);
     }

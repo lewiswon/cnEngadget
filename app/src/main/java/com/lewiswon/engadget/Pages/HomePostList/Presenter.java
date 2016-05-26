@@ -3,6 +3,8 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.lewiswon.engadget.R;
+import com.lewiswon.engadget.Utils.NetWorkUtils;
 import com.lewiswon.engadget.data.Post;
 import com.lewiswon.engadget.data.Source.API;
 import com.lewiswon.engadget.data.Source.PostDataSource;
@@ -28,6 +30,10 @@ public class Presenter implements ViewContract.Action {
 
     @Override
     public void getPosts(int page) {
+        if (!NetWorkUtils.isAvainable(mView.context())){
+            mView.showMessage(mView.context().getString(R.string.network_not_connected));
+            return;
+        }
         String suffix="/page/"+page;
         if(page==1||page==0) suffix="";
         final String url="http://cn.engadget.com"+suffix;
