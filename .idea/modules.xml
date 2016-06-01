@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/cnEngadget.iml" filepath="$PROJECT_DIR$/cnEngadget.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jpushdemo/jpushdemo.iml" filepath="$PROJECT_DIR$/jpushdemo/jpushdemo.iml" />
       <module fileurl="file://$PROJECT_DIR$/viewlibs/viewlibs.iml" filepath="$PROJECT_DIR$/viewlibs/viewlibs.iml" />
     </modules>
   </component>

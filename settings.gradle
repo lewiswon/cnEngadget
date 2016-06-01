@@ -1,1 +1,1 @@
-include ':app', ':viewlibs'
+include ':app', ':viewlibs', ':jpushdemo'
